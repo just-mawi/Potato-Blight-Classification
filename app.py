@@ -2,7 +2,6 @@ import streamlit as st
 import numpy as np
 import onnxruntime as ort
 from PIL import Image
-from matplotlib import cm as mpl_cm
 
 IMG_SIZE      = 224
 DISPLAY_NAMES = ['Early Blight', 'Late Blight', 'Healthy']
