@@ -1,10 +1,11 @@
 """
-Run this once locally to convert best_potato_model.h5 -> model.onnx
-Requires: pip install tf2onnx tensorflow==2.3.1  (or whichever TF you trained with)
+Run once locally to produce model.onnx, model_features.onnx, head_weights.npy
+Requires: pip install tf2onnx  (onnx must be imported before tensorflow)
 """
-import onnx  # must import before TF to avoid DLL conflict on Windows
+import onnx
 import tf2onnx
 import tensorflow as tf
+import numpy as np
 
 class MacroF1Score(tf.keras.metrics.Metric):
     def __init__(self, num_classes, name='macro_f1', **kwargs):
@@ -27,10 +28,41 @@ model = tf.keras.models.load_model(
     compile=False
 )
 
-input_signature = [tf.TensorSpec([None, 224, 224, 3], tf.float32, name='input')]
-onnx_model, _ = tf2onnx.convert.from_keras(model, input_signature=input_signature, opset=13)
+input_sig = [tf.TensorSpec([None, 224, 224, 3], tf.float32, name='input')]
 
+# --- Full prediction model ---
+onnx_model, _ = tf2onnx.convert.from_keras(model, input_signature=input_sig, opset=13)
 with open('model.onnx', 'wb') as f:
     f.write(onnx_model.SerializeToString())
+print('Saved model.onnx')
 
-print('Done — model.onnx saved.')
+# --- Feature extraction model (MobileNetV2 backbone → 7×7×1280 spatial maps) ---
+mnv2 = model.get_layer('mobilenetv2_1.00_224')
+feat_model = tf.keras.Model(inputs=mnv2.input, outputs=mnv2.output)
+onnx_feat, _ = tf2onnx.convert.from_keras(feat_model, input_signature=input_sig, opset=13)
+with open('model_features.onnx', 'wb') as f:
+    f.write(onnx_feat.SerializeToString())
+print('Saved model_features.onnx')
+
+# --- Head weights (BN + Dense layers) for numpy Grad-CAM backprop ---
+bn_layer     = next(l for l in model.layers if isinstance(l, tf.keras.layers.BatchNormalization))
+dense_layers = [l for l in model.layers if isinstance(l, tf.keras.layers.Dense)]
+assert len(dense_layers) == 3, f"Expected 3 Dense layers, got {len(dense_layers)}"
+
+np.save('head_weights.npy', {
+    'bn_gamma': bn_layer.gamma.numpy(),
+    'bn_beta':  bn_layer.beta.numpy(),
+    'bn_mean':  bn_layer.moving_mean.numpy(),
+    'bn_var':   bn_layer.moving_variance.numpy(),
+    'bn_eps':   bn_layer.epsilon,
+    'W1': dense_layers[0].kernel.numpy(),  # (1280, 256)
+    'b1': dense_layers[0].bias.numpy(),
+    'W2': dense_layers[1].kernel.numpy(),  # (256, 128)
+    'b2': dense_layers[1].bias.numpy(),
+    'W3': dense_layers[2].kernel.numpy(),  # (128, 3)
+    'b3': dense_layers[2].bias.numpy(),
+})
+print('Saved head_weights.npy')
+print('  W1:', dense_layers[0].kernel.shape,
+      ' W2:', dense_layers[1].kernel.shape,
+      ' W3:', dense_layers[2].kernel.shape)
