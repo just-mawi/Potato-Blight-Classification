@@ -60,7 +60,7 @@ if uploaded:
 
     probs, features = sess.run(None, {input_name: arr})
     probs    = probs[0]
-    features = features[0]                           # (7, 7, 1280)
+    features = features[0].transpose(1, 2, 0)        # NCHW → (7, 7, 1280)
 
     pred_idx   = int(np.argmax(probs))
     pred_label = DISPLAY_NAMES[pred_idx]
