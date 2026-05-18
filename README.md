@@ -7,9 +7,9 @@ An automated deep learning computer vision system designed to help rapidly diagn
 ## 📌 Table of Contents
 - [Business Understanding](#-business-understanding)
 - [Deliverables](#-deliverables)
-- [Dataset & Data Characterization](#-dataset--data-characterization)
+- [Data](#-data)
 - [Model Architecture & Training Strategy](#-model-architecture--training-strategy)
-- [Performance & Validation Metrics](#-performance--validation-metrics)
+- [Performance](#-performance)
 - [Explainability (Grad-CAM)](#-explainability-grad-cam)
 - [Practical Constraints & Field Guidelines](#-practical-constraints--field-guidelines)
 
@@ -43,7 +43,7 @@ An automated mobile-ready diagnostic tool capable of classifying leaf conditions
 
 ---
 
-## Dataset & Data Characterization
+## Data
 
 The project utilizes a specific **2,152-image subset** of the benchmark open-source **PlantVillage** dataset, divided into three target classes:
 
@@ -80,7 +80,7 @@ The system leverages **Transfer Learning** using a pretrained **MobileNetV2** ba
 
 ---
 
-## Performance & Validation Metrics
+## Performance
 
 To account for the severe dataset imbalance, the system relies strictly on the **F1-Score** (harmonic mean of Precision and Recall) rather than raw accuracy.
 
