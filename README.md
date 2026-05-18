@@ -55,7 +55,7 @@ The project utilizes a specific **2,152-image subset** of the benchmark open-sou
 | **Total Dataset** | **2,152** | **100%** |
 
 ### Data Preprocessing & Augmentation
-* **Normalization:** All input photographs are resized to standard resolutions ($224 \times 224 \times 3$) and dynamically scaled.
+* **Normalization:** All input photographs are resized to standard resolutions ($224 \times 224 \times 3$) and pixel values scaled from btn 0 and 255 to the range of [-1, 1].
 * **Class Imbalance Mitigation:** Because the `Healthy` class represents only ~7% of the input space, Scikit-Learn’s `compute_class_weight` utility was integrated during loss minimization steps to prevent the network from ignoring or misclassifying underrepresented healthy samples.
 * **Augmentation:** Applied explicitly to the training split to combat over-fitting and improve generalizability.
 
@@ -71,11 +71,11 @@ The system leverages **Transfer Learning** using a pretrained **MobileNetV2** ba
    * A custom dense classification head is attached and trained at a baseline learning rate of $\eta = 1\times10^{-3}$.
 2. **Phase 2: Cooperative Fine-Tuning (20 Epochs)**
    * Deep network layers from index layer 130 onward are unfrozen.
-   * The un-throttled top partition trains alongside the custom head using a highly restrictive, smaller fine-tuning step-size learning rate ($\eta = 5\times10^{-5}$) to carefully adapt high-level leaf features without obliterating pretrained weights.
+   * The un-frozen top partition trains alongside the custom head using a highly restrictive, smaller fine-tuning step-size learning rate ($\eta = 5\times10^{-5}$) to carefully adapt high-level leaf features without obliterating pretrained weights.
 
 ### Optimization & Regularization Callbacks
-* Explicit seed configurations (`SEED = 42`) ensure absolute pipeline reproducibility.
-* `ModelCheckpoint` preserves programmatic weights natively to `'best_potato_model.h5'`.
+* Explicit seed configurations (`SEED = 42`) ensure pipeline reproducibility.
+* `ModelCheckpoint` preserves weights to `'best_potato_model.h5'`.
 * `EarlyStopping` prevents overfitting, coupled with validation adjustments handled dynamically via `ReduceLROnPlateau`.
 
 ---
@@ -95,13 +95,13 @@ The model achieves an outstanding **Overall Macro F1-Score of 0.939 (>0.9)**.
 
 ## Explainability (Grad-CAM)
 
-To establish clinical trust, the pipeline incorporates **Grad-CAM (Gradient-weighted Class Activation Mapping)** visualization layers. Grad-CAM generates automated spatial activation heatmaps overlaid directly onto input samples. This allows engineers and extension officers to verify that the neural network’s mathematical focus corresponds directly to geometric leaf lesions and structural abnormalities, rather than noise or uniform background clutter.
+To establish clinical trust, the pipeline incorporates **Grad-CAM (Gradient-weighted Class Activation Mapping)** visualization layers. Grad-CAM generates heatmaps overlaid directly onto input samples. This allows verification that the neural network’s focus corresponds directly to leaf lesions and structural abnormalities, rather than noise or uniform background clutter.
 
 ---
 
 ## Practical Constraints & Field Guidelines
 
-Because the underlying model was trained exclusively on clean, controlled *PlantVillage* source images (characterized by single-leaf photographs captured against uniform backgrounds under steady, consistent lighting), users **must follow strict capture protocols** during field deployment:
+Because the underlying model was trained exclusively on clean, controlled *PlantVillage* source images (characterized by single-leaf photographs captured against uniform backgrounds under steady, consistent lighting), users **should follow certain guidelines** for best results:
 
 * **Single Subject:** Photograph exactly one single leaf close-up, ensuring it fills most of the camera frame.
 * **Natural, Even Light:** Capture imagery under neutral lighting—avoid harsh direct sunlight, dark shadows, or heavy flash glare.
