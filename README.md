@@ -6,12 +6,12 @@ An automated deep learning computer vision system designed to help rapidly diagn
 
 ## 📌 Table of Contents
 - [Business Understanding](#-business-understanding)
+- [Deliverables](#-deliverables)
 - [Dataset & Data Characterization](#-dataset--data-characterization)
 - [Model Architecture & Training Strategy](#-model-architecture--training-strategy)
 - [Performance & Validation Metrics](#-performance--validation-metrics)
 - [Explainability (Grad-CAM)](#-explainability-grad-cam)
 - [Practical Constraints & Field Guidelines](#-practical-constraints--field-guidelines)
-- [Future Roadmap](#-future-roadmap)
 
 ---
 
@@ -31,6 +31,15 @@ An automated mobile-ready diagnostic tool capable of classifying leaf conditions
 1. **Smallholder Farmers:** For early, rapid self-diagnosis to protect crop yields and household income.
 2. **Agricultural Extension Officers:** A scalable digital tool to streamline field advice and support services.
 3. **NGOs & Food Security Bodies:** Data-driven mitigation of crop loss in structurally vulnerable agricultural communities.
+
+---
+
+## Deliverables
+1. GitHub repo
+2. Notebook
+3. [Streamlit deployment](https://potato-blight-classification-2o9j8q7bjtur3yfp8nztav.streamlit.app/)
+4. Non-technical Presentation
+5. Tableau
 
 ---
 
