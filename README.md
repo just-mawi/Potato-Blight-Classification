@@ -4,7 +4,7 @@ An automated deep learning computer vision system designed to help rapidly diagn
 
 ---
 
-## 📌 Table of Contents
+## 📌 Outline
 - [Business Understanding](#-business-understanding)
 - [Deliverables](#-deliverables)
 - [Data](#-data)
