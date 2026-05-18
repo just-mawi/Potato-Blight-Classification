@@ -2,9 +2,8 @@
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.0%2B-orange.svg)](https://github.com/tensorflow/tensorflow)
-[![Framework](https://img.shields.io/badge/Workflow-CRISP--DM-green.svg)]()
 
-An automated deep learning computer vision system designed to help smallholder farmers and agricultural extension officers rapidly diagnose potato leaf diseases from smartphone photographs. Built by **Group 1** using the **CRISP-DM standard workflow** and **MobileNetV2 Transfer Learning**.
+An automated deep learning computer vision system designed to help rapidly diagnose potato leaf diseases from smartphone photographs. Built by **Group 1**.
 
 ---
 
@@ -84,7 +83,7 @@ The model achieves an outstanding **Overall Macro F1-Score of 0.939 (>0.9)**.
 
 * **Early Blight F1-Score:** `0.987`
 * **Late Blight F1-Score:** `0.974`
-* **Healthy Leaf F1-Score:** `0.857` *(Reflects the constraints of the smaller baseline sample size)*
+* **Healthy Leaf F1-Score:** `0.857` 
 
 ---
 
@@ -103,13 +102,5 @@ Because the underlying model was trained exclusively on clean, controlled *Plant
 * **Plain Backgrounds:** Keep the background as uniform and plain as possible (e.g., holding the leaf up against the sky or a clear surface).
 * **Grad-CAM Verification:** Always check the Grad-CAM overlay. If the heatmap highlights arbitrary background zones instead of leaf tissue, the output prediction should be treated with skepticism.
 * **Strict Scope Boundaries:** The tool is specialized exclusively for Early Blight, Late Blight, and Healthy states. It possesses *no out-of-distribution (OOD) layer* and is **not** a general-purpose "crop doctor." If provided with non-potato leaves or unrelated backgrounds, it will unpredictably force a label onto the image.
-
----
-
-## Future Roadmap
-
-* **Data Expansion:** Partner with localized regional agricultural networks to collect 1,000+ new images of healthy leaves, alongside chaotic, noisy, real-world field photographs to build robust immunity against background noise.
-* **Pilot Deployment:** Launch an agile, small-scale mobile pilot with a select group of field agricultural officers to comprehensively evaluate user experience (UX) and real-world app usability.
-* **Two-Stage AI Pipeline:** Upgrade the software infrastructure to incorporate an initial object detection bounding box routine to automatically segment and crop a leaf out of a messy field photo before piping it downstream into the classification model.
 
 ---
