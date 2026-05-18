@@ -36,7 +36,7 @@ An automated mobile-ready diagnostic tool capable of classifying leaf conditions
 
 ## Deliverables
 1. GitHub repo
-2. Notebook
+2. Jupyter Notebook
 3. [Streamlit deployment](https://potato-blight-classification-2o9j8q7bjtur3yfp8nztav.streamlit.app/)
 4. Non-technical Presentation
 5. Tableau
