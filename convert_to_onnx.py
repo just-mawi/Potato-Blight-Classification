@@ -1,7 +1,3 @@
-"""
-Run once locally to produce model.onnx, model_features.onnx, head_weights.npy
-Requires: pip install tf2onnx  (onnx must be imported before tensorflow)
-"""
 import onnx
 import tf2onnx
 import tensorflow as tf
@@ -36,7 +32,7 @@ with open('model.onnx', 'wb') as f:
     f.write(onnx_model.SerializeToString())
 print('Saved model.onnx')
 
-# --- Feature extraction model (MobileNetV2 backbone → 7×7×1280 spatial maps) ---
+# --- Feature extraction model ---
 mnv2 = model.get_layer('mobilenetv2_1.00_224')
 feat_model = tf.keras.Model(inputs=mnv2.input, outputs=mnv2.output)
 onnx_feat, _ = tf2onnx.convert.from_keras(feat_model, input_signature=input_sig, opset=13)
