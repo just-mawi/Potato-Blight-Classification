@@ -39,7 +39,7 @@ An automated mobile-ready diagnostic tool capable of classifying leaf conditions
 2. Jupyter Notebook
 3. [Streamlit deployment](https://potato-blight-classification-2o9j8q7bjtur3yfp8nztav.streamlit.app/)
 4. [Non-technical Presentation](https://canva.link/3xzlmepr150avjv)
-5. Tableau
+5. [Tableau](https://public.tableau.com/app/profile/yvonnie.wanyoike/viz/Potato_Blight_Classification_Analysis/Story1)
 
 ---
 
